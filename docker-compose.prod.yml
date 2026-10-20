@@ -17,8 +17,7 @@ services:
       timeout: 5s
       retries: 10
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
 
   redis:
     image: redis:7-alpine
@@ -34,8 +33,7 @@ services:
       timeout: 5s
       retries: 10
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
 
   ollama:
     image: ollama/ollama:latest
@@ -43,8 +41,20 @@ services:
     volumes:
       - ollama_models:/root/.ollama
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
+
+  ollama-models:
+    image: ollama/ollama:latest
+    restart: "no"
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      LLM_MODEL: ${LLM_MODEL:-llama3.2:3b}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-nomic-embed-text}
+    entrypoint: ["/bin/sh", "-c"]
+    command: "until ollama list >/dev/null 2>&1; do sleep 3; done; ollama pull \"$$LLM_MODEL\" && ollama pull \"$$EMBEDDING_MODEL\""
+    depends_on:
+      - ollama
+    networks: [internal]
 
   api:
     build:
@@ -69,12 +79,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      ollama:
-        condition: service_started
+      ollama-models:
+        condition: service_completed_successfully
     expose: ["8000"]
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4)"]
       interval: 30s
@@ -105,11 +114,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      ollama:
-        condition: service_started
+      ollama-models:
+        condition: service_completed_successfully
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
 
   frontend:
     build:
@@ -120,14 +128,23 @@ services:
     restart: unless-stopped
     expose: ["3000"]
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
+
+  duckdns-updater:
+    image: curlimages/curl:8.12.1
+    restart: unless-stopped
+    environment:
+      DUCKDNS_SUBDOMAIN: ${DUCKDNS_SUBDOMAIN:?Set DUCKDNS_SUBDOMAIN in .env}
+      DUCKDNS_TOKEN: ${DUCKDNS_TOKEN:?Set DUCKDNS_TOKEN in .env}
+    command: ["/bin/sh", "-c", "while true; do curl --fail --silent --show-error \"https://www.duckdns.org/update?domains=$$DUCKDNS_SUBDOMAIN&token=$$DUCKDNS_TOKEN&ip=\" || true; sleep 300; done"]
+    networks: [internal]
+    security_opt: ["no-new-privileges:true"]
 
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
     environment:
-      DOMAIN: ${DOMAIN:?Set DOMAIN to your DuckDNS hostname in .env}
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
     ports:
       - "80:80"
       - "443:443"
@@ -140,8 +157,7 @@ services:
       - frontend
       - api
     networks: [internal]
-    security_opt:
-      - no-new-privileges:true
+    security_opt: ["no-new-privileges:true"]
 
 networks:
   internal:
