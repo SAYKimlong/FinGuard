@@ -2,7 +2,8 @@
  * FinGuard API Client
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Empty string means same-origin requests, routed by Caddy to FastAPI in production.
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
 
 interface ApiOptions {
   method?: string;
