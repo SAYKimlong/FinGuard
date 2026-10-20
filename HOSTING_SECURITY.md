@@ -20,7 +20,7 @@ Keep the database and Redis private. Expose only the HTTPS frontend and the API.
 4. Set APP_ENV=production, DEBUG=false, SECRET_KEY, DATABASE_URL, DATABASE_URL_SYNC, REDIS_URL, CELERY_BROKER_URL, OLLAMA_BASE_URL, and exact CORS_ORIGINS.
 5. Use a unique database password and TLS-enabled database URLs. Do not expose PostgreSQL or Redis to the public internet.
 6. Set CORS_ORIGINS to the exact frontend origin, e.g. https://your-project.vercel.app (no trailing slash). Do not use a wildcard.
-7. Ensure a Celery worker is running using the same backend image and configuration, with command: `celery -A app.workers.celery_app worker --loglevel=INFO`. Verify the actual Celery app module name in the repository before using this command.
+7. Ensure a Celery worker is running using the same backend image and configuration, with command: `celery -A app.workers.celery_app:celery_app worker --loglevel=INFO`. The Celery app module is `app.workers.celery_app` and the exported instance is `celery_app`.
 8. Use persistent, access-controlled storage for uploads. The current local upload path is ephemeral on many container hosts; do not assume files survive redeploys.
 9. Verify the production health endpoint at `https://YOUR_API_HOST/api/health`, then test registration, login, upload, document processing, report access, and cross-account access denial.
 10. Configure backups, retention/deletion, logs without secrets/document contents, and an incident contact.
