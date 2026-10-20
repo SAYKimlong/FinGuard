@@ -1,14 +1,6 @@
-{
-	# Avoid disclosing the Caddy version.
-	servers {
-		header {
-			-Server
-		}
-	}
-}
-
 {$DOMAIN} {
 	encode zstd gzip
+	header -Server
 
 	@api path /api/*
 	reverse_proxy @api api:8000
