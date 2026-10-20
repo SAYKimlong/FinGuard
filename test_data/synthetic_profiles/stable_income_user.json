@@ -1,0 +1,11 @@
+{
+  "profile_name": "Stable Income User (Synthetic)",
+  "monthly_income": 5500,
+  "income_basis": "net",
+  "employment_type": "full_time",
+  "income_stability": "stable",
+  "essential_expenses": 2200,
+  "existing_debt_payments": 350,
+  "savings": 15000,
+  "dependents": 1
+}

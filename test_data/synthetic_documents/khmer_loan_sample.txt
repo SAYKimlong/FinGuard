@@ -1,0 +1,32 @@
+⚠️ SYNTHETIC DOCUMENT — FOR TESTING AND DEMONSTRATION PURPOSES ONLY
+This file contains synthetic Khmer-language loan clauses for OCR and extraction testing.
+All names, amounts, and terms are entirely fictional.
+
+================================================================================
+
+កិច្ចសន្យាប្រាក់កម្ចី
+
+មាត្រា ១: ចំនួនប្រាក់កម្ចី
+ប្រាក់កម្ចីសរុប: ២០,០០០,០០០ រៀល
+រយៈពេល: ២៤ ខែ
+
+មាត្រា ២: អត្រាការប្រាក់
+អត្រាការប្រាក់ប្រចាំឆ្នាំ: ១៨%
+គណនាលើសមតុល្យដែលនៅសល់
+
+មាត្រា ៣: ការផាកពិន័យ
+ការបង់ប្រាក់យឺត: ២% នៃចំនួនទឹកប្រាក់ដែលជំពាក់
+បន្ទាប់ពី ៧ ថ្ងៃ នៃកាលបរិច្ឆេទកំណត់
+
+មាត្រា ៤: ការបង់ប្រាក់មុនកាលកំណត់
+អ្នកខ្ចីអាចបង់ប្រាក់មុនកាលកំណត់ដោយមិនមានការផាកពិន័យ
+ប៉ុន្តែត្រូវជូនដំណឹងជាមុន ៣០ ថ្ងៃ
+
+មាត្រា ៥: ការធានា
+អចលនទ្រព្យដែលមានតម្លៃស្មើនឹងប្រាក់កម្ចី ត្រូវប្រើជាការធានា
+
+================================================================================
+
+NOTE: This is synthetic Khmer text created for FinGuard OCR and text extraction
+testing. It does not represent any real loan agreement. The Khmer numerals and
+clause structure are designed to test multi-script text processing capabilities.

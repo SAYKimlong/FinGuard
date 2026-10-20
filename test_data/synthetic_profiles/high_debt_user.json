@@ -1,0 +1,11 @@
+{
+  "profile_name": "High Debt User (Synthetic)",
+  "monthly_income": 3200,
+  "income_basis": "net",
+  "employment_type": "contract",
+  "income_stability": "variable",
+  "essential_expenses": 1800,
+  "existing_debt_payments": 950,
+  "savings": 2000,
+  "dependents": 2
+}
