@@ -80,13 +80,15 @@ async def upload_document(
     # Validate extension
     file_type = validate_file_extension(file.filename or "unknown")
 
-    # Read and validate size
-    content = await file.read()
+    # Read at most one byte beyond the configured limit to avoid unbounded reads.
+    content = await file.read(settings.max_upload_bytes + 1)
     if len(content) > settings.max_upload_bytes:
+        await file.close()
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail=f"File too large. Maximum size: {settings.MAX_UPLOAD_SIZE_MB}MB",
         )
+    await file.close()
 
     if len(content) == 0:
         raise HTTPException(
