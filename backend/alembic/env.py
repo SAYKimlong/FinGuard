@@ -13,6 +13,9 @@ from app.database import Base
 from app.models import *  # noqa: Import all models so Alembic can see them
 
 config = context.config
+# Use the deployment-provided synchronous URL instead of credentials baked into alembic.ini.
+# Escape percent signs because ConfigParser treats them as interpolation markers.
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_SYNC.replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
