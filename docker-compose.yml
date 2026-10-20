@@ -5,12 +5,14 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: finguard
-      POSTGRES_PASSWORD: finguard_secret
+      # Set POSTGRES_PASSWORD in the ignored project-root .env file.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the project-root .env file}
       POSTGRES_DB: finguard
       POSTGRES_HOST_AUTH_METHOD: md5
       POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    # Bind to loopback: other machines cannot connect through this published port.
     ports:
-      - "5555:5432"
+      - "127.0.0.1:5555:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
