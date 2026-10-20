@@ -1,0 +1,8 @@
+{$DOMAIN} {
+	encode zstd gzip
+	header -Server
+
+	@api path /api/*
+	reverse_proxy @api api:8000
+	reverse_proxy frontend:3000
+}
